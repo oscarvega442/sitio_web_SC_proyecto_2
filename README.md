@@ -20,6 +20,3 @@ Micro‑módulo web en HTML y JavaScript para validar contraseñas según reglas
 ## Cómo ejecutar
 Abrir `index.html` en el navegador.
 
-## Autores
-- Tu nombre
-- Nombre de tu compañera
