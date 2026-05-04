@@ -8,15 +8,29 @@
 <body>
 
 <div class="container">
-    <h2>Validar Contraseña</h2>
+    <h2>Validador de Contraseñas</h2>
 
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password">
-
-    <label for="confirmPassword">Confirmar contraseña:</label>
-    <input type="password" id="confirmPassword">
+    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+    <input type="password" id="confirmPassword" placeholder="Confirma tu contraseña">
 
     <button onclick="validar()">Validar</button>
+
+    <!-- Barra -->
+    <div class="barra">
+        <div id="progreso"></div>
+    </div>
+
+    <p id="nivel"></p>
+
+    <!-- Reglas -->
+    <div class="reglas">
+        <p id="r1">❌ 8 caracteres</p>
+        <p id="r2">❌ Mayúscula</p>
+        <p id="r3">❌ Número</p>
+        <p id="r4">❌ Carácter especial</p>
+        <p id="r5">❌ Sin espacios</p>
+        <p id="r6">❌ Coinciden</p>
+    </div>
 
     <div id="resultado"></div>
 </div>
