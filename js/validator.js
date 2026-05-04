@@ -1,54 +1,63 @@
-// Función principal (interfaz pública)
 function validar() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    const resultado = document.getElementById("resultado");
 
-    const errores = validarPassword(password, confirmPassword);
-
-    if (errores.length === 0) {
-        resultado.innerHTML = "✅ Contraseña válida";
-        resultado.style.color = "green";
-    } else {
-        resultado.innerHTML = errores.map(e => "❌ " + e).join("<br>");
-        resultado.style.color = "red";
-    }
+    const resultado = validarPassword(password, confirmPassword);
+    mostrarResultado(resultado);
 }
 
 
-// Función lógica (clave para pruebas)
 function validarPassword(password, confirmPassword) {
-    let errores = [];
+    let score = 0;
 
-    // 1. Longitud mínima
-    if (password.length < 8) {
-        errores.push("Debe tener al menos 8 caracteres");
+    const reglas = {
+        longitud: password.length >= 8,
+        mayuscula: /[A-Z]/.test(password),
+        numero: /\d/.test(password),
+        especial: /[!@#$%^&*]/.test(password),
+        espacios: !/\s/.test(password),
+        coincide: password === confirmPassword
+    };
+
+    // sumar puntos
+    for (let key in reglas) {
+        if (reglas[key]) score += 100 / 6;
     }
 
-    // 2. Mayúscula
-    if (!/[A-Z]/.test(password)) {
-        errores.push("Debe contener al menos una letra mayúscula");
-    }
+    return { reglas, score };
+}
 
-    // 3. Número
-    if (!/\d/.test(password)) {
-        errores.push("Debe contener al menos un número");
-    }
 
-    // 4. Carácter especial
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-        errores.push("Debe contener al menos un carácter especial");
-    }
+function mostrarResultado(data) {
+    const { reglas, score } = data;
 
-    // 5. Sin espacios
-    if (/\s/.test(password)) {
-        errores.push("No debe contener espacios en blanco");
-    }
+    // actualizar reglas visuales
+    actualizar("r1", reglas.longitud);
+    actualizar("r2", reglas.mayuscula);
+    actualizar("r3", reglas.numero);
+    actualizar("r4", reglas.especial);
+    actualizar("r5", reglas.espacios);
+    actualizar("r6", reglas.coincide);
 
-    // 6. Coincidencia
-    if (password !== confirmPassword) {
-        errores.push("Las contraseñas no coinciden");
-    }
+    // barra
+    const progreso = document.getElementById("progreso");
+    progreso.style.width = score + "%";
 
-    return errores;
+    // color barra
+    if (score < 40) progreso.style.background = "red";
+    else if (score < 70) progreso.style.background = "orange";
+    else progreso.style.background = "green";
+
+    // nivel
+    const nivel = document.getElementById("nivel");
+
+    if (score < 40) nivel.innerText = "Débil";
+    else if (score < 70) nivel.innerText = "Media";
+    else nivel.innerText = "Fuerte";
+}
+
+
+function actualizar(id, cumple) {
+    const el = document.getElementById(id);
+    el.innerText = (cumple ? "✅ " : "❌ ") + el.innerText.substring(2);
 }
