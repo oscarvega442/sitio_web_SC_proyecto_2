@@ -1,30 +1,54 @@
+// Función principal (interfaz pública)
 function validar() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
     const resultado = document.getElementById("resultado");
 
-    // Validaciones
-    if (password.length < 6) {
-        resultado.innerHTML = "❌ La contraseña debe tener al menos 6 caracteres";
+    const errores = validarPassword(password, confirmPassword);
+
+    if (errores.length === 0) {
+        resultado.innerHTML = "✅ Contraseña válida";
+        resultado.style.color = "green";
+    } else {
+        resultado.innerHTML = errores.map(e => "❌ " + e).join("<br>");
         resultado.style.color = "red";
-        return;
+    }
+}
+
+
+// Función lógica (clave para pruebas)
+function validarPassword(password, confirmPassword) {
+    let errores = [];
+
+    // 1. Longitud mínima
+    if (password.length < 8) {
+        errores.push("Debe tener al menos 8 caracteres");
     }
 
+    // 2. Mayúscula
+    if (!/[A-Z]/.test(password)) {
+        errores.push("Debe contener al menos una letra mayúscula");
+    }
+
+    // 3. Número
+    if (!/\d/.test(password)) {
+        errores.push("Debe contener al menos un número");
+    }
+
+    // 4. Carácter especial
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        errores.push("Debe contener al menos un carácter especial");
+    }
+
+    // 5. Sin espacios
+    if (/\s/.test(password)) {
+        errores.push("No debe contener espacios en blanco");
+    }
+
+    // 6. Coincidencia
     if (password !== confirmPassword) {
-        resultado.innerHTML = "❌ Las contraseñas no coinciden";
-        resultado.style.color = "red";
-        return;
+        errores.push("Las contraseñas no coinciden");
     }
 
-    // Validación extra opcional
-    const tieneNumero = /\d/.test(password);
-
-    if (!tieneNumero) {
-        resultado.innerHTML = "❌ Debe incluir al menos un número";
-        resultado.style.color = "red";
-        return;
-    }
-
-    resultado.innerHTML = "✅ Contraseña válida";
-    resultado.style.color = "green";
+    return errores;
 }
