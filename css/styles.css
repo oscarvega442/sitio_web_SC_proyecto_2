@@ -21,9 +21,9 @@ input {
 }
 
 button {
-    width: 100%;
+    width: 106%;
     margin-top: 15px;
-    padding: 10px;
+    padding: 20px;
     background: #6366f1;
     color: white;
     border: none;
@@ -31,7 +31,7 @@ button {
 }
 
 .barra {
-    width: 100%;
+    width: 106%;
     height: 10px;
     background: #334155;
     margin-top: 15px;
